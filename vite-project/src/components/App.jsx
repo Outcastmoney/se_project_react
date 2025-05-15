@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import "./app.css";
+import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import ModalWithForm from "./ModalWithForm/ModalWithForm";
@@ -44,6 +45,7 @@ function App() {
   return (
     <div className="page">
       <div className="page__content">
+        <Footer />
         <Header handleAddClick={handleAddClick} weatherData={weatherData}/>
         <Main weatherData={weatherData} handleCardClick={handleCardClick} />
       </div>
