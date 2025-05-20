@@ -17,11 +17,7 @@ function ModalWithForm({
           className="modal__close modal__close_type_form"
           onClick={closeActiveModal}
         >
-          <img
-            src={closeIcon}
-            alt="close"
-            className="modal__close-icon"
-          />
+          <img src={closeIcon} alt="close" className="modal__close-icon" />
         </button>
         <form>
           {children}

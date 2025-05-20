@@ -54,6 +54,7 @@
   border: none;
   border-bottom: 1px solid #000000;
   width: -webkit-fill-available;
+  padding: 0;
 }
 
 .modal__radio-buttons {
@@ -67,20 +68,32 @@
   height: 36px;
   border-radius: 4px;
   gap: 8px;
-  padding-top: 8px;
-  padding-right: 16px;
-  padding-bottom: 8px;
-  padding-left: 16px;
+  padding: 8px 16px;
   border: none;
   color: #ffffff;
-  font-family: Cabinet Grotesk;
-  background-color: #0000004d;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  background-color: #0000004D;
   display: flex;
   position: absolute;
   left: 28px;
-}
-.modal__submit:hover {
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal__submit:enabled {
+  background-color: #000000;
+}
+
+.modal__submit:disabled {
+  background-color: #0000004D;
+  cursor: not-allowed;
+}
+
+.modal__submit:enabled:hover {
+  background-color: #000000CC;
+  cursor: pointer;
+  background: #00000099;
+
 }
 .modal__close-icon {
   width: 13px;

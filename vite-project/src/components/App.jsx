@@ -45,9 +45,9 @@ function App() {
   return (
     <div className="page">
       <div className="page__content">
-        <Footer />
         <Header handleAddClick={handleAddClick} weatherData={weatherData}/>
         <Main weatherData={weatherData} handleCardClick={handleCardClick} />
+        <Footer />
       </div>
 
       <ModalWithForm
