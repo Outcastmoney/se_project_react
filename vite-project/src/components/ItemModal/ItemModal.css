@@ -13,6 +13,18 @@
   overflow: hidden;
 }
 .modal__title {
+  width: 95px;
+  height: 20px;
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  top: 20px;
+  left: 30px;
+  margin: 0;
+  display: flex;
+  position: absolute;
 }
 
 .modal__content.modal__content_type_image {
@@ -37,7 +49,6 @@
 }
 
 .modal__label {
-  display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 24px;
@@ -45,6 +56,7 @@
   font-size: 16px;
   line-height: 20px;
   color: #000000;
+
 }
 .modal__radio-buttons {
   border: none;
@@ -102,6 +114,17 @@
   align-items: center;
   justify-content: center;
   transition: opacity 0.2s ease-in-out;
+  
+}
+.modal__legend {
+  width: 173px;
+  height: 20px;
+  font-family: Cabinet Grotesk;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  margin: 10px 0;
 }
 
 .modal__close-icon {
@@ -110,8 +133,7 @@
   object-fit: contain;
   opacity: 0.8;
 }
-
-.modal__close:hover .modal__close-icon {
+.modal__close-icon .modal__close:hover .modal__close-icon {
   opacity: 1;
 }
 .modal__image {

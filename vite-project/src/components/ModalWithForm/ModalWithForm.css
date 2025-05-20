@@ -38,6 +38,7 @@
   overflow: hidden;
   justify-content: center;
   margin: 0;
+  padding: 0;
 }
 .modal__form {
   display: flex;
@@ -48,6 +49,7 @@
   display: block;
   border: none;
   border-bottom: 1px solid #000000;
+  width: -webkit-fill-available;
 }
 
 .modal__radio-buttons {
@@ -69,14 +71,15 @@
   color: #ffffff;
   font-family: Cabinet Grotesk;
   background-color: #0000004d;
+  display: flex;
+  position: absolute;
+  left: 28px;
 }
 .modal__submit:hover {
   cursor: pointer;
 }
-.modal__close-icon_type_add {
+.modal__close-icon {
   width: 13px;
   height: 13px;
-  top: 216px;
-  left: 923px;
-  border-width: 2px;
+  transform: scale(0.8);
 }
