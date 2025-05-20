@@ -14,7 +14,7 @@ function ModalWithForm({
         <h2 className="modal__title">{title}</h2>
         <button
           type="button"
-          className="modal__close"
+          className="modal__close modal__close_type_form"
           onClick={closeActiveModal}
         >
           <img

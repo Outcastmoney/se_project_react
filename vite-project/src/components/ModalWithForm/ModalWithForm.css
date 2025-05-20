@@ -45,6 +45,10 @@
   flex-direction: column;
   width: 100%;
 }
+.modal__close_type_form {
+  transform: scale(0.8);
+  bottom: 500px;
+}
 .modal__input {
   display: block;
   border: none;
