@@ -1,3 +1,4 @@
+
 .page {
   background-color: #f3f3f3;
   min-height: 100vh;
@@ -16,7 +17,6 @@
   box-sizing: border-box;
 }
 
-/* Ensure main content takes up available space */
 .main {
   flex: 1;
 }
