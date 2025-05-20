@@ -58,6 +58,10 @@
   color: #000000;
   padding: 0;
 }
+
+.modal__input {
+  margin-top: 8px;
+}
 .modal__label-type-radio {
   display: flex;
   margin-bottom: 24px;
@@ -131,8 +135,8 @@
 }
 
 .modal__close-icon {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
   opacity: 0.8;
 }
