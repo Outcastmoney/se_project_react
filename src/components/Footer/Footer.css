@@ -1,0 +1,33 @@
+.footer {
+  background-color: #f3f3f3;
+  width: 100%;
+  padding: 20px 0;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.footer__content {
+  max-width: 1360px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.footer__text {
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  color: #000000;
+  margin: 0;
+}
+
+.footer__text_type_developer {
+  font-weight: 500;
+}
+
+.footer__text_type_date {
+  font-weight: 400;
+}
