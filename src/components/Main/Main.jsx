@@ -1,11 +1,9 @@
 import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
-import { defaultClothingItems } from "../../utils/constants";
 
-function Main({ weatherData, handleCardClick }) {
-  // Filter clothing items based on the current weather type
-  const filteredItems = defaultClothingItems.filter(
+function Main({ weatherData, handleCardClick, clothingItems }) {
+  const filteredItems = clothingItems.filter(
     (item) => item.weather === weatherData.type
   );
 
@@ -26,7 +24,9 @@ function Main({ weatherData, handleCardClick }) {
               />
             ))
           ) : (
-            <p className="cards__text">No items found for this weather condition.</p>
+            <p className="cards__text">
+              No items found for this weather condition.
+            </p>
           )}
         </ul>
       </section>

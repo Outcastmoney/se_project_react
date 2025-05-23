@@ -7,7 +7,7 @@ import Main from "./Main/Main";
 import ModalWithForm from "./ModalWithForm/ModalWithForm";
 import ItemModal from "./ItemModal/ItemModal";
 import { getWeather, filterWeatherData } from "../utils/weatherApi";
-import { coordinates, apiKey } from "../utils/constants";
+import { coordinates, apiKey, defaultClothingItems } from "../utils/constants";
 import { useEffect } from "react";
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
+  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
 
   const handleCardClick = (card) => {
     setActiveModal("preview");
@@ -62,7 +63,7 @@ function App() {
     <div className="page">
       <div className="page__content">
         <Header handleAddClick={handleAddClick} weatherData={weatherData} />
-        <Main weatherData={weatherData} handleCardClick={handleCardClick} />
+        <Main weatherData={weatherData} handleCardClick={handleCardClick} clothingItems={clothingItems} />
         <Footer />
       </div>
 
