@@ -1,6 +1,9 @@
 import "./WeahterCard.css";
 import { weatherOptions } from "../../utils/constants";
+import { useContext } from "react";
+import CurrentTemperatureUnitContext from "../../CurrentTemperatureUnit";
 function WeatherCard({ weatherData }) {
+  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const normalizeCondition = (condition) => {
     if (!condition) return "";
     return condition.toLowerCase();
@@ -27,7 +30,7 @@ function WeatherCard({ weatherData }) {
 
   return (
     <section className="weather-card">
-      <p className="weather-card__temp">{weatherData.temp.F} &deg; F</p>
+      <p className="weather-card__temp">{weatherData.temp[currentTemperatureUnit]} &deg; {currentTemperatureUnit}</p>
       <img
         src={weatherOption?.url}
         alt={`Card showing ${weatherData.isDay ? "day" : "night"} time ${
