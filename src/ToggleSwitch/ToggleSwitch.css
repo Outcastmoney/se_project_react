@@ -7,7 +7,7 @@
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  
+  margin-left: auto;
 }
 
 .toggle-switch__checkbox {
@@ -27,24 +27,22 @@
   top: 5px;
 }
 .toggle-switch__text_type_F {
-    left: 9px;
+  left: 9px;
 }
 .toggle-switch__text_type_C {
   right: 9px;
 }
 .toggle-switch__checkbox:checked ~ .toggle-switch__text_type_F {
-    color: black;
+  color: black;
 }
 .toggle-switch__checkbox:checked ~ .toggle-switch__text_type_C {
-    color: white;
+  color: white;
 }
 
 .toggle-switch__checkbox:not(:checked) ~ .toggle-switch__text_type_C {
-    color: black;
+  color: black;
 }
-
 
 .toggle-switch__checkbox:checked ~ .toggle-switch__circle {
-    left: 28px;
+  left: 28px;
 }
-

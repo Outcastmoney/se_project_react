@@ -10,5 +10,4 @@ function getItems() {
   });
 }
 
-const api = { getItems };
-export default api;
+export default { getItems };
