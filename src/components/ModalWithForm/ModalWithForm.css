@@ -70,23 +70,27 @@
   gap: 8px;
   padding: 8px 16px;
   border: none;
-  color: #ffffff;
   font-family: 'Cabinet Grotesk', sans-serif;
-  background-color: #0000004D;
   display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   left: 28px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
+
 .modal__submit:enabled {
   background-color: #000000;
+  color: #ffffff;
 }
 
 .modal__submit:disabled {
-  background-color: #0000004D;
+  background-color: #0000004D !important;
+  color: #0000004D !important;
   cursor: not-allowed;
+  opacity: 1;
 }
 
 .modal__submit:enabled:hover {

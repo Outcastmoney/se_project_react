@@ -1,0 +1,30 @@
+.modal__delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: #ff4d00;
+  width: 101px;
+  height: 24px;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  position: absolute;
+  bottom: 65px;
+  right: 35px;
+}
+
+.modal__delete:hover {
+  opacity: 0.4;
+}

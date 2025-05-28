@@ -12,9 +12,13 @@ import { useEffect } from "react";
 import CurrentTemperatureUnitContext from "../CurrentTemperatureUnit";
 import AddItemModal from "./AddItemModal/AddItemModal";
 import Profile from "./AddItemModal/Profile/Profile";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 import api from "../utils/Api";
 
 function App() {
+  // ...
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState(null);
   const [weatherData, setWeatherData] = useState({
     type: "",
     temp: { F: 999, C: 999 },
@@ -58,9 +62,39 @@ function App() {
     };
   }, [activeModal]);
 
+  const openConfirmationModal = (card) => {
+    setIsDeleteModalOpen(true);
+    setCardToDelete(card);
+  };
+
+  const handleCardDelete = (card) => {
+    api.deleteItem(card._id)
+      .then(() => {
+        setClothingItems((prevItems) => prevItems.filter((item) => item._id !== card._id));
+        setIsDeleteModalOpen(false);
+        setCardToDelete(null);
+        closeActiveModal();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false);
+    setCardToDelete(null);
+  };
+
+
   const handleAddItemModalSubmit = (name, imageUrl, weather) => {
-    setClothingItems((prevItems) => [{ name, link: imageUrl, weather }, ...prevItems]);
-    closeActiveModal();
+    api.addItem({ name, imageUrl, weather })
+      .then((newItem) => {
+        setClothingItems((prevItems) => [newItem, ...prevItems]);
+        closeActiveModal();
+      })
+      .catch((err) => {
+        console.error("Failed to add item:", err);
+      });
   };
 
   useEffect(() => {
@@ -121,6 +155,13 @@ function App() {
           isOpen={activeModal === "preview"}
           card={selectedCard}
           closeActiveModal={closeActiveModal}
+          onDelete={openConfirmationModal}
+        />
+        <DeleteConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCancelDelete}
+          onConfirm={handleCardDelete}
+          card={cardToDelete}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>

@@ -17,9 +17,12 @@
   font-family: "Cabinet Grotesk", Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
-  line-height: 20px;
   text-align: center;
   z-index: 1;
+  background-color: #ffff;
+  padding: 10px;
+  border-radius: 4px;
+  height: 15px
 }
 
 .card__image {

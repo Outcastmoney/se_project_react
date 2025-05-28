@@ -1,14 +1,13 @@
 import "./ClothesSection.css";
-import { defaultClothingItems } from "../../utils/constants";
 import ItemCard from "../ItemCard/ItemCard";
 
 
 function ClothesSection({ clothingItems, weatherData, onCardClick }) {
   return (
     <div className="clothesSection">
-      <div>
-        <p>Your items</p>
-        <button>Add New</button>
+      <div className="clothesSection__header">
+        <p className="clothesSection__header-text">Your items</p>
+        <button className="clothesSection__add-btn">+ Add New</button>
       </div>
       <ul className="card__list">
         {clothingItems

@@ -31,6 +31,8 @@ export default function AddItemModal({
     setWeather("");
   };
 
+  const isSubmitDisabled = !name || !imageUrl || !weatherType;
+
   return (
     <ModalWithForm
       buttonText="Add garment"
@@ -38,6 +40,7 @@ export default function AddItemModal({
       isOpen={isOpen}
       closeActiveModal={closeActiveModal}
       onSubmit={handleSubmit}
+      disabled={isSubmitDisabled}
     >
       <div className="modal__form">
         <label htmlFor="name" className="modal__label">
@@ -78,7 +81,6 @@ export default function AddItemModal({
               name="weatherType"
               value="hot"
               className="modal__radio-input"
-              value="hot"
               onChange={handleWeatherTypeChange}
               checked={weatherType === "hot"}
             />
@@ -94,7 +96,6 @@ export default function AddItemModal({
               name="weatherType"
               value="warm"
               className="modal__radio-input"
-              value="warm"
               onChange={handleWeatherTypeChange}
               checked={weatherType === "warm"}
             />
@@ -110,7 +111,6 @@ export default function AddItemModal({
               name="weatherType"
               value="cold"
               className="modal__radio-input"
-              value="cold"
               onChange={handleWeatherTypeChange}
               checked={weatherType === "cold"}
             />
