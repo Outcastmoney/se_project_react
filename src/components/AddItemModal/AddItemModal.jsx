@@ -28,7 +28,7 @@ export default function AddItemModal({
     onAddItemModalSubmit(name, imageUrl, weatherType);
     setName("");
     setImageUrl("");
-    setWeather("");
+    setWeatherType("");
   };
 
   const isSubmitDisabled = !name || !imageUrl || !weatherType;

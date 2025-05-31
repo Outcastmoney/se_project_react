@@ -1,4 +1,5 @@
 export const weatherOptions = [
+  // Daytime
   {
     Day: true,
     condition: "clear",
@@ -6,9 +7,30 @@ export const weatherOptions = [
   },
   {
     Day: true,
-    condition: "cloudy",
-    url: new URL("../assets/day/cloudy.svg", import.meta.url).href,
+    condition: "clouds",
+    url: new URL("../assets/day/cloudy.svg", import.meta.url).href, // Use 'cloudy.svg' for 'clouds' condition
   },
+  {
+    Day: true,
+    condition: "rain",
+    url: new URL("../assets/day/rain.svg", import.meta.url).href, // Placeholder, add SVG if missing
+  },
+  {
+    Day: true,
+    condition: "storm",
+    url: new URL("../assets/day/storm.svg", import.meta.url).href, // Placeholder, add SVG if missing
+  },
+  {
+    Day: true,
+    condition: "snow",
+    url: new URL("../assets/day/snow.svg", import.meta.url).href, // Placeholder, add SVG if missing
+  },
+  {
+    Day: true,
+    condition: "fog",
+    url: new URL("../assets/day/fog.svg", import.meta.url).href, // Placeholder, add SVG if missing
+  },
+  // Nighttime
   {
     Day: false,
     condition: "clear",
@@ -16,8 +38,28 @@ export const weatherOptions = [
   },
   {
     Day: false,
-    condition: "cloudy",
-    url: new URL("../assets/night/cloudy.svg", import.meta.url).href,
+    condition: "clouds",
+    url: new URL("../assets/night/cloudy.svg", import.meta.url).href, // Use 'cloudy.svg' for 'clouds' condition
+  },
+  {
+    Day: false,
+    condition: "rain",
+    url: new URL("../assets/night/rain.svg", import.meta.url).href, // Placeholder, add SVG if missing
+  },
+  {
+    Day: false,
+    condition: "storm",
+    url: new URL("../assets/night/storm.svg", import.meta.url).href, // Placeholder, add SVG if missing
+  },
+  {
+    Day: false,
+    condition: "snow",
+    url: new URL("../assets/night/snow.svg", import.meta.url).href, // Placeholder, add SVG if missing
+  },
+  {
+    Day: false,
+    condition: "fog",
+    url: new URL("../assets/night/fog.svg", import.meta.url).href, // Placeholder, add SVG if missing
   },
 ];
 

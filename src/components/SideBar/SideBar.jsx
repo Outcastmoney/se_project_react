@@ -1,6 +1,6 @@
 import "./SideBar.css";
 import { useContext } from "react";
-import CurrentTemperatureUnitContext from "../../CurrentTemperatureUnit";
+import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit";
 import avatar from "../../assets/avatar.svg";
 function SideBar({ weatherData }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
