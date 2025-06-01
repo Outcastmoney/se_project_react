@@ -11,7 +11,15 @@
   z-index: 1000;
   border-radius: 16px;
   overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0.3s, opacity 0.3s ease-in;
 }
+.modal_opened {
+  opacity: 1;
+  visibility: visible;
+}
+
 .modal__title {
   width: 95px;
   height: 20px;
@@ -40,6 +48,7 @@
   overflow: hidden;
   justify-content: center;
   margin: 0;
+  
 }
 
 .modal__form {
@@ -135,8 +144,8 @@
 }
 
 .modal__close-icon {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   opacity: 0.8;
 }
