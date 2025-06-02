@@ -11,7 +11,6 @@ function ClothesSection({ clothingItems, weatherData, onCardClick, onAddItem }) 
       </div>
       <ul className="card__list">
         {clothingItems
-          .filter((card) => card.weather === weatherData.type)
           .map((filteredCard) => (
             <ItemCard
               key={filteredCard._id}
