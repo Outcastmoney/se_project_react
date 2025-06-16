@@ -1,13 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./components/App";
-import "./index.css";
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './components/App';
+import { HashRouter } from 'react-router-dom';
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+// Using HashRouter instead of BrowserRouter to fix routing issues
+console.log('Initializing React Router with HashRouter');
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-  <App />
-    </BrowserRouter>
+    <HashRouter>
+      <App />
+    </HashRouter>
   </React.StrictMode>
 );

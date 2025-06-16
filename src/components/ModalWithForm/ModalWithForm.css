@@ -4,60 +4,152 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #0000004d;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.3s, opacity 0.3s ease-in;
+  z-index: 1000;
 }
+
 .modal_opened {
   visibility: visible;
   opacity: 1;
 }
-.modal__title {
-  margin: 0;
+
+.modal__content {
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  max-width: 496px;
+  width: 100%;
+  position: relative;
+  padding: 28px;
+  box-sizing: border-box;
 }
+
+.modal__title {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #000;
+}
+
 .modal__close {
   position: absolute;
   top: 20px;
   right: 28px;
-}
-.modal__content {
-  width: 496px;
-  height: 436px;
-  padding: 24px 28px 36px;
-  max-width: 496px;
-  box-sizing: border-box;
-  width: 100%;
-  border-radius: 20px;
-  border-width: 1px;
-  background-color: white;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow: hidden;
-  justify-content: center;
-  margin: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
   padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
 }
+
+.modal__close:hover {
+  opacity: 0.6;
+}
+
+.modal__close-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .modal__form {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-.modal__close_type_form {
-  transform: scale(0.8);
-  bottom: 500px;
-}
+
 .modal__input {
-  display: block;
+  width: 100%;
   border: none;
-  border-bottom: 1px solid #000000;
-  width: -webkit-fill-available;
+  border-bottom: 1px solid #000;
+  padding: 8px 0;
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.2;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.modal__input:focus {
+  border-color: #0077ff;
+}
+
+.modal__input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.modal__input-title {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #2f71e5;
+}
+
+.modal__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.modal__submit {
+  width: 100%;
+  background: #000;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  padding: 13px 0;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.modal__submit:disabled {
+  background: #e6e8eb;
+  color: #b6bcbf;
+  cursor: not-allowed;
+}
+
+.modal__submit:not(:disabled):hover {
+  opacity: 0.8;
+}
+
+.modal__alt-button {
+  background: none;
+  border: none;
+  color: #2f71e5;
+  font-size: 14px;
+  line-height: 1.2;
   padding: 0;
+  cursor: pointer;
+  align-self: center;
+  transition: opacity 0.2s ease;
+}
+
+.modal__alt-button:hover {
+  opacity: 0.7;
+}
+
+.modal__error {
+  color: #ff0000;
+  font-size: 12px;
+  line-height: 1.2;
+  margin: -10px 0 10px;
+  min-height: 14px;
 }
 
 .modal__radio-buttons {
@@ -65,42 +157,23 @@
   padding: 0;
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 }
-.modal__submit {
-  width: 124px;
-  height: 36px;
-  border-radius: 4px;
-  gap: 8px;
-  padding: 8px 16px;
-  border: none;
-  font-family: 'Cabinet Grotesk', sans-serif;
+
+.modal__radio-label {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 28px;
+  margin-bottom: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-
-.modal__submit:enabled {
-  background-color: #000000;
-  color: #ffffff;
+.modal__radio-input {
+  margin-right: 8px;
 }
 
-.modal__submit:disabled {
-  background-color: #0000004D !important;
-  color: #0000004D !important;
-  cursor: not-allowed;
-  opacity: 1;
-}
-
-.modal__submit:enabled:hover {
-  background-color: #000000CC;
-  cursor: pointer;
-  background: #00000099;
-
+.modal__radio-text {
+  font-size: 16px;
+  line-height: 1.2;
 }
 .modal__close-icon {
   width: 20px;

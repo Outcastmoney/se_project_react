@@ -6,9 +6,12 @@ function ModalWithForm({
   buttonText,
   title,
   isOpen,
-  closeActiveModal,
+  onClose,
   onSubmit,
-  disabled,
+  onButtonClick,
+  buttonTextAlt,
+  disabled = false,
+  formClass = "",
 }) {
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
@@ -17,15 +20,30 @@ function ModalWithForm({
         <button
           type="button"
           className="modal__close modal__close_type_form"
-          onClick={closeActiveModal}
+          onClick={onClose}
         >
           <img src={closeIcon} alt="close" className="modal__close-icon" />
         </button>
-        <form onSubmit={onSubmit}>
+        <form className={`modal__form ${formClass}`} onSubmit={onSubmit}>
           {children}
-          <button type="submit" className="modal__submit" disabled={disabled}>
-            {buttonText}
-          </button>
+          <div className="modal__buttons">
+            <button 
+              type="submit" 
+              className="modal__submit" 
+              disabled={disabled}
+            >
+              {buttonText}
+            </button>
+            {buttonTextAlt && onButtonClick && (
+              <button 
+                type="button" 
+                className="modal__alt-button"
+                onClick={onButtonClick}
+              >
+                {buttonTextAlt}
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </div>

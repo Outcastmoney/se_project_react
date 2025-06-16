@@ -1,4 +1,4 @@
-import React from "react";
+// DeleteConfirmationModal component
 import "./DeleteConfirmationModal.css";
 
 function DeleteConfirmationModal({ isOpen, onClose, onConfirm, card }) {
