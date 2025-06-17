@@ -2,23 +2,59 @@ const BASE_URL = "http://localhost:3001";
 
 const getHeaders = () => {
   const token = localStorage.getItem('jwt');
-  return {
+  
+
+  if (!token || token === 'undefined' || token === 'null') {
+    console.warn('No valid JWT token found in localStorage');
+
+    localStorage.removeItem('jwt');
+    return {
+      'Content-Type': 'application/json'
+    };
+  }
+  
+  const headers = {
     'Content-Type': 'application/json',
-    ...(token && { 'Authorization': `Bearer ${token}` })
+    'Authorization': `Bearer ${token}`
   };
+  
+  return headers;
 };
 
 export function checkResponse(res) {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(`Error: ${res.status}`);
+  console.error(`API Error: ${res.status}`, res);
+  
+
+  if (res.status === 401) {
+
+    console.log('Authentication failed (401), clearing token');
+    localStorage.removeItem('jwt');
+  }
+  
+
+  return Promise.reject({
+    status: res.status,
+    message: `Error: ${res.status}`
+  });
 }
 
 function getItems() {
+  console.log('Fetching items from API');
   return fetch(`${BASE_URL}/items`, {
     headers: getHeaders()
-  }).then(checkResponse);
+  })
+  .then(checkResponse)
+  .then(items => {
+    console.log('Items received:', items);
+    return items;
+  })
+  .catch(err => {
+    console.error('Error fetching items:', err);
+    throw err;
+  });
 }
 
 function deleteItem(id) {
@@ -36,23 +72,39 @@ function addItem({ name, imageUrl, weather }) {
   }).then(checkResponse);
 }
 
-function addCardLike(id, token) {
+function addCardLike(id) {
   return fetch(`${BASE_URL}/items/${id}/likes`, {
     method: "PUT",
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
+    headers: getHeaders()
   }).then(checkResponse);
 }
 
-function removeCardLike(id, token) {
+function removeCardLike(id) {
   return fetch(`${BASE_URL}/items/${id}/likes`, {
     method: "DELETE",
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
+    headers: getHeaders()
+  }).then(checkResponse);
+}
+
+
+function changeLikeStatus(id, isLiked) {
+  return fetch(`${BASE_URL}/items/${id}/likes`, {
+    method: isLiked ? "PUT" : "DELETE",
+    headers: getHeaders()
+  }).then(checkResponse);
+}
+
+
+function checkAuth() {
+  const token = localStorage.getItem('jwt');
+  return !!token;
+}
+
+function updateProfile({ name, avatar }) {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: 'PATCH',
+    headers: getHeaders(),
+    body: JSON.stringify({ name, avatar })
   }).then(checkResponse);
 }
 
@@ -61,5 +113,8 @@ export default {
   deleteItem, 
   addItem, 
   addCardLike, 
-  removeCardLike 
+  removeCardLike,
+  changeLikeStatus,
+  checkAuth,
+  updateProfile
 };

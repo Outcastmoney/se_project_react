@@ -1,0 +1,115 @@
+.login-modal__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.login-modal__label {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.login-modal__input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #000;
+  padding: 8px 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 1.2;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.login-modal__input:focus {
+  border-color: #08111b;
+}
+
+.login-modal__input_error {
+  border-bottom: 1px solid #ff4d00;
+}
+
+.login-modal__input-error {
+  color: #ff4d00;
+  font-size: 12px;
+  margin: 0 0 8px;
+  min-height: 14px;
+}
+
+.login-modal__input-title {
+  width: 45;
+  height: 20;
+  top: 255px;
+  left: 500px;
+  font-family: Cabinet Grotesk, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+
+.login-modal__error {
+  color: #ff4d00;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.login-modal__buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.login-modal__submit-button {
+  border-radius: 4px;
+  gap: 8px;
+  padding-top: 8px;
+  padding-right: 16px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  color: #fff;
+  font-family: Cabinet Grotesk, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  background-color: #000;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.login-modal__submit-button:hover {
+  opacity: 0.8;
+}
+
+.login-modal__submit-button:disabled {
+  background: #0000004d;
+  color: #fff;
+  cursor: not-allowed;
+  border: none;
+}
+
+.login-modal__alt-button {
+  font-family: Cabinet Grotesk, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  color: #000;
+  opacity: 0.5;
+  background: none;
+  border: none;
+}
+
+.login-modal__alt-button:hover {
+  opacity: 0.7;
+}

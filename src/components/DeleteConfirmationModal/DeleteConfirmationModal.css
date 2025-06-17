@@ -4,6 +4,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-width: 670px;
@@ -13,29 +14,40 @@
   background-color: white;
   z-index: 1000;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  padding: 0;
 }
 .modal__warning {
-  margin: 0;
+  margin: 0 auto 20px auto;
   width: 367px;
-  height: 48px;
-  top: 331px;
-  left: 536px;
+  min-height: 48px;
   font-family: "Cabinet Grotesk", sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
   letter-spacing: 0%;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  flex-wrap: nowrap;
+  flex-direction: column;
 }
-
+.modal__actionButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
 .modal__button_type_confirm {
   width: 138px;
   height: 24px;
-  top: 419px;
-  left: 651px;
   font-family: "Cabinet Grotesk", sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -55,27 +67,23 @@
 }
 
 .modal__button_type_cancel {
-    width: 61;
-height: 24;
-top: 467px;
-left: 689px;
-font-family: "Cabinet Grotesk", sans-serif;
-font-weight: 700;
-font-size: 20px;
-line-height: 24px;
-letter-spacing: 0%;
-color: #000000;
-background-color: transparent;
-border: none;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-white-space: nowrap;
-margin: 5px 35px;
-
+  width: 61px;
+  height: 24px;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: #000000;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  margin: 5px 35px;
 }
 .modal__button_type_cancel:hover {
-    opacity: 0.4;
+  opacity: 0.4;
 }
-    

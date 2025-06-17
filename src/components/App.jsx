@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
@@ -9,6 +9,7 @@ import AddItemModal from "./AddItemModal/AddItemModal";
 import ItemModal from "./ItemModal/ItemModal";
 import LoginModal from "./LoginModal/LoginModal";
 import RegisterModal from "./RegisterModal/RegisterModal";
+import EditProfileModal from "./EditProfileModal/EditProfileModal";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import DeleteConfirmationModal from "./DeleteConfirmationModal/DeleteConfirmationModal";
 import api from "../utils/Api";
@@ -30,17 +31,17 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [clothingItems, setClothingItems] = useState([]);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Check token on initial load
+
   useEffect(() => {
-    console.log('App - Checking for JWT token on initial load');
     const token = localStorage.getItem('jwt');
     console.log('App - Token exists:', !!token);
     
@@ -50,36 +51,50 @@ function App() {
           console.log('App - Token valid, user data:', user);
           setCurrentUser(user);
           setIsLoggedIn(true);
-          console.log('App - isLoggedIn set to true');
-          navigate('/');
         })
         .catch((err) => {
           console.error('App - Token check failed:', err);
           localStorage.removeItem('jwt');
           setCurrentUser(null);
           setIsLoggedIn(false);
-          console.log('App - isLoggedIn set to false');
-          navigate('/');
+          setClothingItems(defaultClothingItems);
         });
     } else {
-      console.log('App - No token found, user not logged in');
+      setClothingItems(defaultClothingItems);
     }
-  }, [navigate]);
+  }, []);
 
-  const handleLogin = () => {
-    const token = localStorage.getItem('jwt');
-    console.log('handleLogin called, token exists:', !!token);
+  const handleLogin = (token) => {
+    // Use the token that was passed in, or get it from localStorage if not provided
+    const authToken = token || localStorage.getItem('jwt');
+    console.log('handleLogin called, token exists:', !!authToken);
     
-    if (token) {
-      auth.checkToken(token)
+    if (authToken) {
+      auth.checkToken(authToken)
         .then((user) => {
           console.log('Login successful, user data:', user);
           setCurrentUser(user);
           setIsLoggedIn(true);
-          console.log('isLoggedIn set to TRUE');
-          // Try navigating directly to profile after login
-          navigate('/profile');
-          console.log('Navigated to /profile');
+          
+          return api.getItems();
+        })
+        .then((items) => {
+          console.log('Got items after login:', items);
+
+          const filteredItems = items.filter(item => {
+            const imageUrl = item.imageUrl || item.link || '';
+            return !imageUrl.includes('example.com');
+          });
+          
+          if (filteredItems.length === 0) {
+            setClothingItems(defaultClothingItems);
+          } else {
+            setClothingItems(filteredItems);
+          }
+          
+          setIsLoginModalOpen(false);
+          // Use setTimeout to ensure state updates complete before navigation
+          setTimeout(() => navigate('/profile'), 0);
         })
         .catch((err) => {
           console.error('Login check failed:', err);
@@ -92,7 +107,9 @@ function App() {
     localStorage.removeItem('jwt');
     setCurrentUser(null);
     setIsLoggedIn(false);
-    navigate('/');
+    setClothingItems(defaultClothingItems);
+    // Use setTimeout to ensure state updates complete before navigation
+    setTimeout(() => navigate('/'), 0);
   };
 
   const handleLoginClick = () => {
@@ -106,6 +123,7 @@ function App() {
   const closeAllModals = () => {
     setIsLoginModalOpen(false);
     setIsRegisterModalOpen(false);
+    setIsEditProfileModalOpen(false);
     setActiveModal('');
   };
 
@@ -124,6 +142,26 @@ function App() {
   const closeActiveModal = () => {
     setActiveModal("");
   };
+  
+  const handleEditProfileClick = () => {
+    setIsEditProfileModalOpen(true);
+  };
+
+  const handleEditProfileSubmit = ({ name, avatar }) => {
+    api.updateProfile({ name, avatar })
+      .then((updatedUser) => {
+        // Update current user with the new data
+        setCurrentUser(updatedUser);
+        // Close the modal and reset the state
+        setIsEditProfileModalOpen(false);
+        setActiveModal('');
+        setSelectedCard({});
+      })
+      .catch((err) => {
+        console.error('Error updating profile:', err);
+        alert('Failed to update profile. Please try again.');
+      });
+  };
 
   useEffect(() => {
     if (!activeModal) return;
@@ -138,6 +176,29 @@ function App() {
       document.removeEventListener("keydown", handleEscClose);
     };
   }, [activeModal]);
+  
+
+  useEffect(() => {
+    // Only fetch items if logged in and we haven't already loaded them
+    if (isLoggedIn && currentUser) {
+      console.log('Fetching items due to login state change');
+      api.getItems()
+        .then((items) => {
+          console.log('Updated items fetched:', items);
+          const filteredItems = items.filter(item => {
+            const imageUrl = item.imageUrl || item.link || '';
+            return !imageUrl.includes('example.com');
+          });
+          
+          if (filteredItems.length > 0) {
+            setClothingItems(filteredItems);
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching updated items:', err);
+        });
+    }
+  }, [isLoggedIn, currentUser?._id]);
 
   const openConfirmationModal = (card) => {
     setIsDeleteModalOpen(true);
@@ -156,74 +217,75 @@ function App() {
         closeActiveModal();
       })
       .catch((err) => {
-        console.log(err);
+        console.error('Error deleting item:', err);
+
+        if (err.status === 403) {
+          alert('You do not have permission to delete this item.');
+        }
+        setIsDeleteModalOpen(false);
+        setCardToDelete(null);
+        closeActiveModal();
       });
-  };
-
-  const handleCardLike = ({ id, isLiked }) => {
-    if (!isLoggedIn) {
-      handleLoginClick();
-      return;
-    }
-
-    const token = localStorage.getItem('jwt');
-    if (!token) return;
-
-    !isLiked
-      ? api.addCardLike(id, token)
-          .then((updatedCard) => {
-            setClothingItems((cards) =>
-              cards.map((item) => (item._id === id ? updatedCard : item))
-            );
-          })
-          .catch((err) => console.error('Error liking card:', err))
-      : api.removeCardLike(id, token)
-          .then((updatedCard) => {
-            setClothingItems((cards) =>
-              cards.map((item) => (item._id === id ? updatedCard : item))
-            );
-          })
-          .catch((err) => console.error('Error unliking card:', err));
-  };
-
-  const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false);
-    setCardToDelete(null);
   };
 
   const handleAddItemModalSubmit = (name, imageUrl, weather) => {
     api
       .addItem({ name, imageUrl, weather })
-      .then((newItem) => {
-        setClothingItems((prevItems) => [newItem, ...prevItems]);
+      .then((res) => {
+  
+        setClothingItems([res, ...clothingItems]);
         closeActiveModal();
+        
+
+        return api.getItems();
+      })
+      .then((items) => {
+        if (items) {
+          console.log('Refreshed items after adding new item:', items);
+          // Filter out test cards with example.com URLs
+          const filteredItems = items.filter(item => {
+            const imageUrl = item.imageUrl || item.link || '';
+            return !imageUrl.includes('example.com');
+          });
+          
+          if (filteredItems.length > 0) {
+            setClothingItems(filteredItems);
+          }
+        }
       })
       .catch((err) => {
-        console.error("Failed to add item:", err);
+        console.error('Error adding item:', err);
+        alert('Failed to add item. Please try again.');
       });
   };
 
+
+
+  // Fetch weather data initially and when returning to home page
   useEffect(() => {
+    // Create a flag to track if component is mounted
+    let isMounted = true;
+    
     getWeather(coordinates, apiKey)
       .then((data) => {
-        const filterData = filterWeatherData(data);
-        setWeatherData(filterData);
+        // Only update state if component is still mounted
+        if (isMounted) {
+          const filterData = filterWeatherData(data);
+          setWeatherData(filterData);
+        }
       })
       .catch((err) => {
         console.log(err);
       });
+      
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  useEffect(() => {
-    api
-      .getItems()
-      .then((data) => {
-        setClothingItems(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // We removed duplicate useEffect hook that was causing navigation issues
+  // The necessary data fetching is handled in the other useEffect hook that depends on isLoggedIn and currentUser
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -238,6 +300,7 @@ function App() {
               isLoggedIn={isLoggedIn}
               onLogout={handleLogout}
               onLogin={handleLoginClick}
+              onRegister={handleRegisterClick}
             />
 
             <Routes>
@@ -249,27 +312,31 @@ function App() {
                     handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
                     isLoggedIn={isLoggedIn}
-                    onCardLike={handleCardLike}
-                    currentUser={currentUser}
                   />
                 }
               />
               <Route
                 path="/profile"
                 element={
-                  <Profile
-                    clothingItems={clothingItems}
-                    weatherData={weatherData}
-                    onCardClick={handleCardClick}
-                    onAddItem={handleAddClick}
-                    onLogout={handleLogout}
-                  />
+                  <ProtectedRoute isLoggedIn={isLoggedIn}>
+                    <Profile
+                      clothingItems={clothingItems.filter(
+                        (item) => item.owner === currentUser?._id
+                      )}
+                      weatherData={weatherData}
+                      onSelectCard={handleCardClick}
+                      onCardClick={handleCardClick}
+                      onAddItem={handleAddClick}
+                      onLogout={handleLogout}
+                      onEditProfile={handleEditProfileClick}
+                    />
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/debug-profile"
                 element={
-                  <div style={{padding: '20px'}}>
+                  <div className="debug-container">
                     <h1>Debug Profile Page</h1>
                     <div>
                       <h2>Auth State:</h2>
@@ -279,7 +346,7 @@ function App() {
                     </div>
                     <button 
                       onClick={() => navigate('/profile')}
-                      style={{padding: '10px', margin: '20px 0', cursor: 'pointer'}}
+                      className="debug-button"
                     >
                       Go to Profile Page
                     </button>
@@ -293,43 +360,44 @@ function App() {
           
           <AddItemModal
             isOpen={activeModal === "add-garment"}
-            closeActiveModal={closeAllModals}
-            onAddItemModalSubmit={handleAddItemModalSubmit}
+            onClose={closeActiveModal}
+            onSubmit={handleAddItemModalSubmit}
           />
           
           <ItemModal
             isOpen={activeModal === "preview"}
             card={selectedCard}
-            closeActiveModal={closeAllModals}
+            onClose={closeActiveModal}
             onDelete={openConfirmationModal}
             currentUser={currentUser}
           />
           
           <DeleteConfirmationModal
             isOpen={isDeleteModalOpen}
-            onClose={handleCancelDelete}
+            onClose={() => setIsDeleteModalOpen(false)}
             onConfirm={handleCardDelete}
             card={cardToDelete}
           />
-          
+
           <LoginModal
             isOpen={isLoginModalOpen}
             onClose={closeAllModals}
-            onLogin={handleLogin}
-            onRegisterClick={() => {
-              setIsLoginModalOpen(false);
-              setIsRegisterModalOpen(true);
-            }}
+            onSubmit={handleLogin}
+            onRegister={handleRegisterClick}
           />
           
           <RegisterModal
             isOpen={isRegisterModalOpen}
             onClose={closeAllModals}
-            onRegister={handleLogin}
-            onLoginClick={() => {
-              setIsRegisterModalOpen(false);
-              setIsLoginModalOpen(true);
-            }}
+            onSubmit={handleLogin}
+            onLogin={handleLoginClick}
+          />
+          
+          <EditProfileModal
+            isOpen={isEditProfileModalOpen}
+            onClose={() => setIsEditProfileModalOpen(false)}
+            onSubmit={handleEditProfileSubmit}
+            currentUser={currentUser}
           />
         </div>
       </CurrentTemperatureUnitContext.Provider>

@@ -1,17 +1,10 @@
 .sidebar {
   display: flex;
 }
-.sidebar__avatar {
-  width: 56px;
-  height: 56px;
-  border-width: 1px;
-}
 .sidebar__userName {
   width: 157px;
   height: 25px;
-  top: 135px;
-  left: 112px;
-  font-family: 'Cabinet Grotesk', sans-serif;
+  font-family: "Cabinet Grotesk", sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 100%;
@@ -20,13 +13,51 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
+  margin: 0;
+}
+.sidebar__avatar {
+  width: 56px;
+  height: 56px;
+  border-width: 1px;
+  border-radius: 50%;
 }
 
-.sidebar__sideBar {
-  display: inline-flex;
-  gap: 16px;
+.sidebar__button-edit {
+  height: 25px;
+  font-family: Cabinet Grotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  border: none;
+  color: #000000;
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
+  background-color: #f3f3f3;
+  padding: 25px 0 20px;
+}
+.sidebar__button-logout {
+  height: 25;
+  font-family: Cabinet Grotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  border: none;
+  color: #000000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 5px 0 20px;
+  background-color: #f3f3f3;
+}
+.sidebar__sideBar {
+  gap: 16px;
   width: 100%;
   height: 100%;
   top: 160px;
@@ -35,4 +66,35 @@
   border-radius: 12px;
   padding: 0;
   margin: 0;
+}
+
+.sidebar__cards {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.sidebar__cards-title {
+  font-size: 20px;
+  line-height: 24px;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+}
+
+/* Match the main page card list styling */
+.sidebar .card__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+}
+
+.sidebar__avatar-name-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }

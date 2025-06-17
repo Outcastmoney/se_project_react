@@ -10,10 +10,9 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, card }) {
           &times;
         </button>
         <p className="modal__warning">
-          Are you sure you want to delete this item? This action is
-          irreversible.
+          Are you sure you want to delete this item? This action is irreversible.
         </p>
-        <div className="modal__actions">
+        <div className="modal__actionButtons">
           <button
             className="modal__button modal__button_type_confirm"
             onClick={() => onConfirm(card)}

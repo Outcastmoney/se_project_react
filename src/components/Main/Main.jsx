@@ -6,9 +6,6 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 
 const Main = ({ weatherData, handleCardClick, clothingItems }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  const filteredItems = clothingItems.filter(
-    (item) => item.weather === weatherData.type
-  );
 
   return (
     <main className="main">

@@ -1,6 +1,6 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
-const ProtectedRoute = ({ isLoggedIn, redirectPath = '/' }) => {
+const ProtectedRoute = ({ isLoggedIn, redirectPath = '/', children }) => {
   const location = useLocation();
 
   console.log('ProtectedRoute - isLoggedIn:', isLoggedIn);
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ isLoggedIn, redirectPath = '/' }) => {
   }
 
   console.log('ProtectedRoute - Access granted, rendering route content');
-  return <Outlet />;
+  return children;
 };
 
 export default ProtectedRoute;

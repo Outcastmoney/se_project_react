@@ -1,4 +1,3 @@
-// DeleteButton component
 import "./DeleteButton.css";
 
 function DeleteButton({ onClick }) {

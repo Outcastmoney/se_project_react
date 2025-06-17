@@ -21,18 +21,17 @@
 }
 
 .modal__title {
-  width: 95px;
-  height: 20px;
   font-family: Cabinet Grotesk;
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 0%;
-  top: 20px;
-  left: 30px;
   margin: 0;
+  margin-left: 0px;
+  padding-left: 0px;
   display: flex;
-  position: absolute;
+  align-items: center;
+  margin: 0 0 15px;
 }
 
 .modal__content.modal__content_type_image {
@@ -48,7 +47,7 @@
   overflow: hidden;
   justify-content: center;
   margin: 0;
-  
+  padding: 0;
 }
 
 .modal__form {
@@ -74,7 +73,6 @@
 .modal__label-type-radio {
   display: flex;
   margin-bottom: 24px;
-
 }
 .modal__radio-buttons {
   border: none;

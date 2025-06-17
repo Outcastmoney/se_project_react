@@ -1,39 +1,147 @@
-import { useState } from 'react';
-import ModalWithForm from '../ModalWithForm/ModalWithForm';
-import { register } from '../../utils/auth';
+import { useState, useEffect } from "react";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import { register } from "../../utils/auth";
+import "./RegisterModal.css";
 
-const RegisterModal = ({ isOpen, onClose, onRegister, onLoginClick }) => {
-  const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  
+  // Field validation states
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [avatarError, setAvatarError] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+  
+  useEffect(() => {
+    if (isOpen) {
+      validateForm();
+    } else {
+      setEmail("");
+      setPassword("");
+      setName("");
+      setAvatar("");
+      setEmailError("");
+      setPasswordError("");
+      setNameError("");
+      setAvatarError("");
+      setError("");
+    }
+  }, [isOpen]);
+  
+  useEffect(() => {
+    if (isOpen) {
+      validateForm();
+    }
+  }, [email, password, name, avatar]);
+  
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setEmailError("Email is required");
+      return false;
+    } else if (!emailRegex.test(email)) {
+      setEmailError("Please enter a valid email address");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+  
+  const validatePassword = (password) => {
+    if (!password) {
+      setPasswordError("Password is required");
+      return false;
+    } else if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
+  
+  const validateName = (name) => {
+    if (!name) {
+      setNameError("Name is required");
+      return false;
+    } else if (name.length < 2) {
+      setNameError("Name must be at least 2 characters");
+      return false;
+    } else if (name.length > 30) {
+      setNameError("Name cannot exceed 30 characters");
+      return false;
+    }
+    setNameError("");
+    return true;
+  };
+  
+  const validateAvatar = (avatar) => {
+    if (avatar && !avatar.startsWith("http")) {
+      setAvatarError("Avatar must be a valid URL");
+      return false;
+    }
+    setAvatarError("");
+    return true;
+  };
+  
+  const validateForm = () => {
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = validatePassword(password);
+    const isNameValid = validateName(name);
+    const isAvatarValid = validateAvatar(avatar);
+    
+    setIsFormValid(isEmailValid && isPasswordValid && isNameValid && isAvatarValid);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    validateForm();
+    
+    if (!isFormValid) {
+      return;
+    }
+    
+    setError("");
     setIsLoading(true);
-    setError('');
+    setError("");
 
     register(name, avatar, email, password)
       .then((data) => {
         if (data) {
-          onRegister();
+          return import("../../utils/auth").then((authModule) => {
+            return authModule.authorize(email, password);
+          });
+        }
+      })
+      .then((data) => {
+        if (data && data.token) {
+          localStorage.setItem("jwt", data.token);
+
+          onSubmit(data.token);
           onClose();
         }
       })
       .catch((err) => {
-        console.error('Registration error:', err);
-        // Parse the error message to extract the status code
+        console.error("Registration error:", err);
+
         const statusCodeMatch = err.toString().match(/Error:\s*(\d+)/);
-        const statusCode = statusCodeMatch ? parseInt(statusCodeMatch[1]) : null;
-        
+        const statusCode = statusCodeMatch
+          ? parseInt(statusCodeMatch[1])
+          : null;
+
         if (statusCode === 409) {
-          setError('Email is already registered. Please use a different email or try logging in.');
+          setError(
+            "Email is already registered. Please use a different email or try logging in."
+          );
         } else if (statusCode === 400) {
-          setError('Invalid registration data. Please check your information.');
+          setError("Invalid registration data. Please check your information.");
         } else {
-          setError('Registration failed. Please try again later.');
+          setError("Registration failed. Please try again later.");
         }
       })
       .finally(() => {
@@ -47,60 +155,81 @@ const RegisterModal = ({ isOpen, onClose, onRegister, onLoginClick }) => {
       onClose={onClose}
       onSubmit={handleSubmit}
       title="Sign up"
-      buttonText={isLoading ? 'Signing up...' : 'Sign up'}
-      onButtonClick={onLoginClick}
-      buttonTextAlt="or Sign in"
+      buttonText={isLoading ? "Signing up..." : "Sign up"}
+      showDefaultButtons={false}
     >
-      <label className="modal__label">
-        <p className="modal__input-title">Name</p>
+      <label className="register-modal__label">
+        <p className="register-modal__input-title">Email</p>
         <input
-          className="modal__input"
-          type="text"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Name"
-          required
-          minLength="2"
-          maxLength="30"
-        />
-      </label>
-      <label className="modal__label">
-        <p className="modal__input-title">Avatar URL</p>
-        <input
-          className="modal__input"
-          type="url"
-          name="avatar"
-          value={avatar}
-          onChange={(e) => setAvatar(e.target.value)}
-          placeholder="Avatar URL"
-        />
-      </label>
-      <label className="modal__label">
-        <p className="modal__input-title">Email</p>
-        <input
-          className="modal__input"
+          className={`register-modal__input ${emailError ? 'register-modal__input_error' : ''}`}
           type="email"
           name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onBlur={() => validateEmail(email)}
         />
+        {emailError && <p className="register-modal__input-error">{emailError}</p>}
       </label>
-      <label className="modal__label">
-        <p className="modal__input-title">Password</p>
+      <label className="register-modal__label">
+        <p className="register-modal__input-title">Password</p>
         <input
-          className="modal__input"
+          className={`register-modal__input ${passwordError ? 'register-modal__input_error' : ''}`}
           type="password"
           name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onBlur={() => validatePassword(password)}
         />
+        {passwordError && <p className="register-modal__input-error">{passwordError}</p>}
       </label>
-      {error && <p className="modal__error">{error}</p>}
+      <label className="register-modal__label">
+        <p className="register-modal__input-title">Name</p>
+        <input
+          className={`register-modal__input ${nameError ? 'register-modal__input_error' : ''}`}
+          type="text"
+          name="name"
+          placeholder="Name"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onBlur={() => validateName(name)}
+        />
+        {nameError && <p className="register-modal__input-error">{nameError}</p>}
+      </label>
+      <label className="register-modal__label">
+        <p className="register-modal__input-title">Avatar URL</p>
+        <input
+          className={`register-modal__input ${avatarError ? 'register-modal__input_error' : ''}`}
+          type="url"
+          name="avatar"
+          placeholder="Avatar URL"
+          value={avatar}
+          onChange={(e) => setAvatar(e.target.value)}
+          onBlur={() => validateAvatar(avatar)}
+        />
+        {avatarError && <p className="register-modal__input-error">{avatarError}</p>}
+      </label>
+      {error && <p className="register-modal__error">{error}</p>}
+      <div className="register-modal__buttons">
+        <button 
+          type="submit" 
+          className="register-modal__submit-button"
+          disabled={isLoading || !isFormValid}
+        >
+          {isLoading ? "Signing up..." : "Sign up"}
+        </button>
+        <button 
+          type="button" 
+          className="register-modal__alt-button"
+          onClick={onLoginClick}
+        >
+          Or Login
+        </button>
+      </div>
     </ModalWithForm>
   );
 };

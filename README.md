@@ -36,7 +36,7 @@ WTWR (What to Wear) is a responsive web application that helps users decide what
 
 ## Backend Repository
 
-The backend server code can be found here: https://github.com/yourusername/wtwr-backend
+The backend server code can be found here: [https://github.com/Outcastmoney/se_project_express.git]
 
 ## Screenshots
 
@@ -44,4 +44,4 @@ The backend server code can be found here: https://github.com/yourusername/wtwr-
 
 ## Deployment
 
-The application is deployed at: [your-deployment-url.com](https://your-deployment-url.com)
+The application is deployed at: [https://outcastmoney.github.io/se_project_react/]

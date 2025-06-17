@@ -4,8 +4,8 @@ import { useState } from "react";
 
 export default function AddItemModal({
   isOpen,
-  closeActiveModal,
-  onAddItemModalSubmit,
+  onClose,
+  onSubmit,
 }) {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -25,7 +25,7 @@ export default function AddItemModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddItemModalSubmit(name, imageUrl, weatherType);
+    onSubmit(name, imageUrl, weatherType);
     setName("");
     setImageUrl("");
     setWeatherType("");
@@ -38,11 +38,11 @@ export default function AddItemModal({
       buttonText="Add garment"
       title="New garment"
       isOpen={isOpen}
-      closeActiveModal={closeActiveModal}
+      onClose={onClose}
       onSubmit={handleSubmit}
       disabled={isSubmitDisabled}
     >
-      <div className="modal__form">
+      <>
         <label htmlFor="name" className="modal__label">
           Name
           <input
@@ -117,7 +117,7 @@ export default function AddItemModal({
             Cold
           </label>
         </fieldset>
-      </div>
+      </>
     </ModalWithForm>
   );
 }
