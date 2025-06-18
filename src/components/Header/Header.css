@@ -9,8 +9,35 @@
 
 .header__container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 20px;
+}
+
+.header__logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.header__home-link {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.header__home-link:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
 
 .header__right-container {

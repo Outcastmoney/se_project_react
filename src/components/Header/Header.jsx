@@ -30,9 +30,14 @@ function Header({
   return (
     <header className="header">
       <div className="header__container">
-        <a href="#" onClick={handleLogoClick}>
-          <img className="header__logo" src={logo} alt="wtwr logo" />
-        </a>
+        <div className="header__logo-container">
+          <a href="#" onClick={handleLogoClick} className="header__logo-link">
+            <img className="header__logo" src={logo} alt="wtwr logo" />
+          </a>
+          <a href="#" onClick={handleLogoClick} className="header__home-link">
+            Home
+          </a>
+        </div>
         <p className="header__date-and-location">
           {currentDate}, {weatherData.city}
         </p>
