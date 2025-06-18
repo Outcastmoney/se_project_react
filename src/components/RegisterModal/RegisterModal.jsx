@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { register } from "../../utils/auth";
 import "./RegisterModal.css";
@@ -17,28 +17,6 @@ const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
   const [nameError, setNameError] = useState("");
   const [avatarError, setAvatarError] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
-  
-  useEffect(() => {
-    if (isOpen) {
-      validateForm();
-    } else {
-      setEmail("");
-      setPassword("");
-      setName("");
-      setAvatar("");
-      setEmailError("");
-      setPasswordError("");
-      setNameError("");
-      setAvatarError("");
-      setError("");
-    }
-  }, [isOpen]);
-  
-  useEffect(() => {
-    if (isOpen) {
-      validateForm();
-    }
-  }, [email, password, name, avatar]);
   
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -89,14 +67,36 @@ const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
     return true;
   };
   
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
     const isNameValid = validateName(name);
     const isAvatarValid = validateAvatar(avatar);
     
     setIsFormValid(isEmailValid && isPasswordValid && isNameValid && isAvatarValid);
-  };
+  }, [email, password, name, avatar]);
+  
+  useEffect(() => {
+    if (isOpen) {
+      validateForm();
+    } else {
+      setEmail("");
+      setPassword("");
+      setName("");
+      setAvatar("");
+      setEmailError("");
+      setPasswordError("");
+      setNameError("");
+      setAvatarError("");
+      setError("");
+    }
+  }, [isOpen, validateForm]);
+  
+  useEffect(() => {
+    if (isOpen) {
+      validateForm();
+    }
+  }, [email, password, name, avatar, isOpen, validateForm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -198,7 +198,7 @@ function App() {
           console.error('Error fetching updated items:', err);
         });
     }
-  }, [isLoggedIn, currentUser?._id]);
+  }, [isLoggedIn, currentUser]);
 
   const openConfirmationModal = (card) => {
     setIsDeleteModalOpen(true);

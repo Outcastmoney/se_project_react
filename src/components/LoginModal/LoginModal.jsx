@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import { authorize } from '../../utils/auth';
 import './LoginModal.css';
@@ -11,24 +11,6 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
-  
-  useEffect(() => {
-    if (isOpen) {
-      validateForm();
-    } else {
-      setEmail('');
-      setPassword('');
-      setEmailError('');
-      setPasswordError('');
-      setError('');
-    }
-  }, [isOpen]);
-  
-  useEffect(() => {
-    if (isOpen) {
-      validateForm();
-    }
-  }, [email, password]);
   
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,11 +37,29 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
     return true;
   };
   
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
     setIsFormValid(isEmailValid && isPasswordValid);
-  };
+  }, [email, password]);
+
+  useEffect(() => {
+    if (isOpen) {
+      validateForm();
+    } else {
+      setEmail('');
+      setPassword('');
+      setEmailError('');
+      setPasswordError('');
+      setError('');
+    }
+  }, [isOpen, validateForm]);
+  
+  useEffect(() => {
+    if (isOpen) {
+      validateForm();
+    }
+  }, [email, password, isOpen, validateForm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

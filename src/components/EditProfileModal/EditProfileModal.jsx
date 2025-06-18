@@ -1,8 +1,8 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import "./EditProfileModal.css";
 
-function EditProfileModal({ isOpen, onClose, onSubmit, currentUser }) {
+function EditProfileModal({ isOpen, onClose, onSubmit }) {
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [nameError, setNameError] = useState("");
@@ -12,32 +12,6 @@ function EditProfileModal({ isOpen, onClose, onSubmit, currentUser }) {
 
   const justSubmittedRef = useRef(false);
   const formLoadedRef = useRef(false);
-  
-  useEffect(() => {
-    if (isOpen) {
-      // Reset the form when opened - don't pre-fill with current user data
-      setName("");
-      setAvatar("");
-      setNameError("");
-      setAvatarError("");
-      setIsFormValid(true);
-      justSubmittedRef.current = false;
-    } else {
-      // Reset form when closed
-      setName("");
-      setAvatar("");
-      setNameError("");
-      setAvatarError("");
-      formLoadedRef.current = false;
-    }
-  }, [isOpen]);
-  
-
-  useEffect(() => {
-    if (isOpen) {
-      validateForm();
-    }
-  }, [name, avatar, isOpen]);
   
   const validateName = (name) => {
     if (!name) {
@@ -63,11 +37,37 @@ function EditProfileModal({ isOpen, onClose, onSubmit, currentUser }) {
     return true;
   };
   
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const isNameValid = validateName(name);
     const isAvatarValid = validateAvatar(avatar);
+
     setIsFormValid(isNameValid && isAvatarValid);
-  };
+  }, [name, avatar]);
+  
+  useEffect(() => {
+    if (isOpen) {
+      // Reset the form when opened - don't pre-fill with current user data
+      setName("");
+      setAvatar("");
+      setNameError("");
+      setAvatarError("");
+      setIsFormValid(true);
+      justSubmittedRef.current = false;
+    } else {
+      // Reset form when closed
+      setName("");
+      setAvatar("");
+      setNameError("");
+      setAvatarError("");
+      formLoadedRef.current = false;
+    }
+  }, [isOpen]);
+  
+  useEffect(() => {
+    if (isOpen) {
+      validateForm();
+    }
+  }, [name, avatar, isOpen, validateForm]);
 
   function handleNameChange(e) {
     setName(e.target.value);
