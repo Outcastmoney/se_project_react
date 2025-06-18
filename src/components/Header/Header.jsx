@@ -31,12 +31,12 @@ function Header({
     <header className="header">
       <div className="header__container">
         <div className="header__logo-container">
-          <a href="#" onClick={handleLogoClick} className="header__logo-link">
+          <Link to="/" className="header__logo-link">
             <img className="header__logo" src={logo} alt="wtwr logo" />
-          </a>
-          <a href="#" onClick={handleLogoClick} className="header__home-link">
+          </Link>
+          <Link to="/" className="header__home-link">
             Home
-          </a>
+          </Link>
         </div>
         <p className="header__date-and-location">
           {currentDate}, {weatherData.city}
