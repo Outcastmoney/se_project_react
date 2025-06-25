@@ -11,12 +11,17 @@ const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   
-  // Field validation states
+  
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [nameError, setNameError] = useState("");
   const [avatarError, setAvatarError] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
+  
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [nameTouched, setNameTouched] = useState(false);
+  const [avatarTouched, setAvatarTouched] = useState(false);
   
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -88,6 +93,10 @@ const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
       setPasswordError("");
       setNameError("");
       setAvatarError("");
+      setEmailTouched(false);
+      setPasswordTouched(false);
+      setNameTouched(false);
+      setAvatarTouched(false);
       setError("");
     }
   }, [isOpen, validateForm]);
@@ -100,6 +109,10 @@ const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setEmailTouched(true);
+    setPasswordTouched(true);
+    setNameTouched(true);
+    setAvatarTouched(true);
     validateForm();
     
     if (!isFormValid) {
@@ -161,57 +174,69 @@ const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
       <label className="register-modal__label">
         <p className="register-modal__input-title">Email</p>
         <input
-          className={`register-modal__input ${emailError ? 'register-modal__input_error' : ''}`}
+          className={`register-modal__input ${emailTouched && emailError ? 'register-modal__input_error' : ''}`}
           type="email"
           name="email"
           placeholder="Email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          onBlur={() => validateEmail(email)}
+          onBlur={() => {
+            setEmailTouched(true);
+            validateEmail(email);
+          }}
         />
-        {emailError && <p className="register-modal__input-error">{emailError}</p>}
+        {emailTouched && emailError && <p className="register-modal__input-error">{emailError}</p>}
       </label>
       <label className="register-modal__label">
         <p className="register-modal__input-title">Password</p>
         <input
-          className={`register-modal__input ${passwordError ? 'register-modal__input_error' : ''}`}
+          className={`register-modal__input ${passwordTouched && passwordError ? 'register-modal__input_error' : ''}`}
           type="password"
           name="password"
           placeholder="Password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          onBlur={() => validatePassword(password)}
+          onBlur={() => {
+            setPasswordTouched(true);
+            validatePassword(password);
+          }}
         />
-        {passwordError && <p className="register-modal__input-error">{passwordError}</p>}
+        {passwordTouched && passwordError && <p className="register-modal__input-error">{passwordError}</p>}
       </label>
       <label className="register-modal__label">
         <p className="register-modal__input-title">Name</p>
         <input
-          className={`register-modal__input ${nameError ? 'register-modal__input_error' : ''}`}
+          className={`register-modal__input ${nameTouched && nameError ? 'register-modal__input_error' : ''}`}
           type="text"
           name="name"
           placeholder="Name"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          onBlur={() => validateName(name)}
+          onBlur={() => {
+            setNameTouched(true);
+            validateName(name);
+          }}
         />
-        {nameError && <p className="register-modal__input-error">{nameError}</p>}
+        {nameTouched && nameError && <p className="register-modal__input-error">{nameError}</p>}
       </label>
       <label className="register-modal__label">
         <p className="register-modal__input-title">Avatar URL</p>
         <input
-          className={`register-modal__input ${avatarError ? 'register-modal__input_error' : ''}`}
+          className={`register-modal__input ${avatarTouched && avatarError ? 'register-modal__input_error' : ''}`}
           type="url"
           name="avatar"
           placeholder="Avatar URL"
           value={avatar}
           onChange={(e) => setAvatar(e.target.value)}
-          onBlur={() => validateAvatar(avatar)}
+          onBlur={() => {
+            setAvatarTouched(true);
+            validateAvatar(avatar);
+          }}
         />
-        {avatarError && <p className="register-modal__input-error">{avatarError}</p>}
+        {avatarTouched && avatarError && <p className="register-modal__input-error">{avatarError}</p>}
       </label>
       {error && <p className="register-modal__error">{error}</p>}
       <div className="register-modal__buttons">

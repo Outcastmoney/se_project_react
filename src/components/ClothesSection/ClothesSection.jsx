@@ -1,7 +1,7 @@
 import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";
 
-function ClothesSection({ clothingItems = [], onCardClick, onAddItem }) {
+function ClothesSection({ clothingItems = [], onCardClick, onAddItem, isLoggedIn, onLikeClick }) {
   // Log the clothingItems for debugging
   console.log('ClothesSection received items:', clothingItems);
 
@@ -18,6 +18,8 @@ function ClothesSection({ clothingItems = [], onCardClick, onAddItem }) {
               key={filteredCard._id}
               item={filteredCard}
               onCardClick={onCardClick}
+              isLoggedIn={isLoggedIn}
+              onLikeClick={onLikeClick}
             />
           ))
         ) : (

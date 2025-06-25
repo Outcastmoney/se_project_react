@@ -2,7 +2,7 @@ import "./Header.css";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import logo from "../../assets/wtwr.svg";
 import avatar from "../../assets/avatar.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
@@ -20,12 +20,7 @@ function Header({
 
   const currentUser = useContext(CurrentUserContext);
 
-  const navigate = useNavigate();
-
-  const handleLogoClick = (e) => {
-    e.preventDefault();
-    navigate('/');
-  };
+  // We use Link components for navigation instead of programmatic navigation
 
   return (
     <header className="header">
@@ -33,9 +28,6 @@ function Header({
         <div className="header__logo-container">
           <Link to="/" className="header__logo-link">
             <img className="header__logo" src={logo} alt="wtwr logo" />
-          </Link>
-          <Link to="/" className="header__home-link">
-            Home
           </Link>
         </div>
         <p className="header__date-and-location">

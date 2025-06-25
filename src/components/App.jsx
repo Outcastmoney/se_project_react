@@ -42,8 +42,35 @@ function App() {
 
 
   useEffect(() => {
+    getWeather(coordinates, apiKey)
+      .then((data) => {
+        const processedWeatherData = filterWeatherData(data);
+        setWeatherData(processedWeatherData);
+        return api.getItems();
+      })
+      .then((items) => {
+        if (items && Array.isArray(items)) {
+          const filteredItems = items.filter(item => {
+            const imageUrl = item.imageUrl || item.link || '';
+            return !imageUrl.includes('example.com');
+          });
+          
+          if (filteredItems.length > 0) {
+            setClothingItems(filteredItems);
+          } else {
+            setClothingItems(defaultClothingItems);
+          }
+        } else {
+          setClothingItems(defaultClothingItems);
+        }
+      })
+      .catch(() => {
+        setClothingItems(defaultClothingItems);
+      });
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem('jwt');
-    console.log('App - Token exists:', !!token);
     
     if (token) {
       auth.checkToken(token)
@@ -152,10 +179,9 @@ function App() {
       .then((updatedUser) => {
         // Update current user with the new data
         setCurrentUser(updatedUser);
-        // Close the modal and reset the state
+        // Close the modal using the existing function
         setIsEditProfileModalOpen(false);
-        setActiveModal('');
-        setSelectedCard({});
+        closeActiveModal();
       })
       .catch((err) => {
         console.error('Error updating profile:', err);
@@ -179,27 +205,53 @@ function App() {
   
 
   useEffect(() => {
-    // Only fetch items if logged in and we haven't already loaded them
-    if (isLoggedIn && currentUser) {
-      console.log('Fetching items due to login state change');
+    if (isLoggedIn && currentUser && clothingItems.length > 0) {
       api.getItems()
         .then((items) => {
-          console.log('Updated items fetched:', items);
-          const filteredItems = items.filter(item => {
-            const imageUrl = item.imageUrl || item.link || '';
-            return !imageUrl.includes('example.com');
-          });
-          
-          if (filteredItems.length > 0) {
-            setClothingItems(filteredItems);
+          if (Array.isArray(items) && items.length > 0) {
+            const filteredItems = items.filter(item => {
+              const imageUrl = item.imageUrl || item.link || '';
+              return !imageUrl.includes('example.com');
+            });
+            
+            if (filteredItems.length > 0) {
+              setClothingItems(filteredItems);
+            }
           }
         })
-        .catch(err => {
-          console.error('Error fetching updated items:', err);
-        });
+        .catch(() => {});
     }
-  }, [isLoggedIn, currentUser]);
+  }, [isLoggedIn, currentUser, clothingItems.length]);
 
+  const handleCardLike = (cardId, isLiked) => {
+    // Only process likes if user is logged in
+    if (!isLoggedIn) return;
+    
+    // The API expects true to add a like, false to remove a like
+    // But our isLiked is the current state, so we need to pass the opposite
+    const shouldLike = !isLiked;
+    
+    console.log('App - handleCardLike:', { cardId, currentlyLiked: isLiked, action: shouldLike ? 'Adding like' : 'Removing like' });
+    
+    api.changeLikeStatus(cardId, shouldLike)
+      .then((updatedCard) => {
+        console.log('API response for like update:', updatedCard);
+        
+        // Update the card in the state immediately after successful API call
+        setClothingItems((prevItems) => {
+          return prevItems.map((c) => {
+            if (c._id === updatedCard._id) {
+              return updatedCard;
+            }
+            return c;
+          });
+        });
+      })
+      .catch((err) => {
+        console.error('Error updating like status:', err);
+      });
+  };
+  
   const openConfirmationModal = (card) => {
     setIsDeleteModalOpen(true);
     setCardToDelete(card);
@@ -232,26 +284,9 @@ function App() {
     api
       .addItem({ name, imageUrl, weather })
       .then((res) => {
-  
+        // Add the new item to the beginning of the array
         setClothingItems([res, ...clothingItems]);
         closeActiveModal();
-        
-
-        return api.getItems();
-      })
-      .then((items) => {
-        if (items) {
-          console.log('Refreshed items after adding new item:', items);
-          // Filter out test cards with example.com URLs
-          const filteredItems = items.filter(item => {
-            const imageUrl = item.imageUrl || item.link || '';
-            return !imageUrl.includes('example.com');
-          });
-          
-          if (filteredItems.length > 0) {
-            setClothingItems(filteredItems);
-          }
-        }
       })
       .catch((err) => {
         console.error('Error adding item:', err);
@@ -312,6 +347,7 @@ function App() {
                     handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
                     isLoggedIn={isLoggedIn}
+                    onLikeClick={handleCardLike}
                   />
                 }
               />
@@ -320,15 +356,15 @@ function App() {
                 element={
                   <ProtectedRoute isLoggedIn={isLoggedIn}>
                     <Profile
-                      clothingItems={clothingItems.filter(
-                        (item) => item.owner === currentUser?._id
-                      )}
+                      clothingItems={clothingItems}
                       weatherData={weatherData}
                       onSelectCard={handleCardClick}
                       onCardClick={handleCardClick}
                       onAddItem={handleAddClick}
                       onLogout={handleLogout}
                       onEditProfile={handleEditProfileClick}
+                      isLoggedIn={isLoggedIn}
+                      onLikeClick={handleCardLike}
                     />
                   </ProtectedRoute>
                 }
@@ -369,7 +405,7 @@ function App() {
             card={selectedCard}
             onClose={closeActiveModal}
             onDelete={openConfirmationModal}
-            currentUser={currentUser}
+            isLoggedIn={isLoggedIn}
           />
           
           <DeleteConfirmationModal
@@ -397,7 +433,6 @@ function App() {
             isOpen={isEditProfileModalOpen}
             onClose={() => setIsEditProfileModalOpen(false)}
             onSubmit={handleEditProfileSubmit}
-            currentUser={currentUser}
           />
         </div>
       </CurrentTemperatureUnitContext.Provider>

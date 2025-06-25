@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import ClothesSection from "../ClothesSection/ClothesSection";
 import SideBar from "../SideBar/SideBar";
 
-function Profile({ clothingItems, weatherData, onCardClick, onAddItem, onLogout, onEditProfile }) {
+function Profile({ clothingItems, weatherData, onCardClick, onAddItem, onLogout, onEditProfile, isLoggedIn, onLikeClick }) {
   console.log("Profile component rendering with:", {
     itemCount: Array.isArray(clothingItems) ? clothingItems.length : 'Not an array',
     items: clothingItems,
@@ -45,6 +45,8 @@ function Profile({ clothingItems, weatherData, onCardClick, onAddItem, onLogout,
         weatherData={weatherData}
         onCardClick={onCardClick}
         onAddItem={onAddItem}
+        isLoggedIn={isLoggedIn}
+        onLikeClick={onLikeClick}
       />
     </div>
   );

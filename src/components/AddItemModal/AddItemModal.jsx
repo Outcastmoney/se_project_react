@@ -1,6 +1,5 @@
-import "./AddItemModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AddItemModal({
   isOpen,
@@ -26,10 +25,15 @@ export default function AddItemModal({
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(name, imageUrl, weatherType);
-    setName("");
-    setImageUrl("");
-    setWeatherType("");
   };
+  
+  useEffect(() => {
+    if (isOpen) {
+      setName("");
+      setImageUrl("");
+      setWeatherType("");
+    }
+  }, [isOpen]);
 
   const isSubmitDisabled = !name || !imageUrl || !weatherType;
 
@@ -42,7 +46,7 @@ export default function AddItemModal({
       onSubmit={handleSubmit}
       disabled={isSubmitDisabled}
     >
-      <>
+      <div>
         <label htmlFor="name" className="modal__label">
           Name
           <input
@@ -117,7 +121,7 @@ export default function AddItemModal({
             Cold
           </label>
         </fieldset>
-      </>
+      </div>
     </ModalWithForm>
   );
 }

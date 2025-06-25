@@ -1,8 +1,10 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useContext } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./EditProfileModal.css";
 
 function EditProfileModal({ isOpen, onClose, onSubmit }) {
+  const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [nameError, setNameError] = useState("");
@@ -45,23 +47,19 @@ function EditProfileModal({ isOpen, onClose, onSubmit }) {
   }, [name, avatar]);
   
   useEffect(() => {
-    if (isOpen) {
-      // Reset the form when opened - don't pre-fill with current user data
-      setName("");
-      setAvatar("");
+    if (isOpen && currentUser) {
+      // Pre-fill the form with current user data
+      setName(currentUser.name || "");
+      setAvatar(currentUser.avatar || "");
       setNameError("");
       setAvatarError("");
       setIsFormValid(true);
       justSubmittedRef.current = false;
-    } else {
-      // Reset form when closed
-      setName("");
-      setAvatar("");
-      setNameError("");
-      setAvatarError("");
+    } else if (!isOpen) {
+      // Only reset form when closed
       formLoadedRef.current = false;
     }
-  }, [isOpen]);
+  }, [isOpen, currentUser]);
   
   useEffect(() => {
     if (isOpen) {

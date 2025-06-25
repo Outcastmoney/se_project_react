@@ -1,32 +1,65 @@
 .card {
-  width: 100%;
-  max-width: 100%;
+  width: 325px;
   position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.card__title {
+.card__header {
   position: absolute;
   top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card__title-container {
+  background-color: #ffff;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.card__title {
   margin: 0;
   color: rgba(0, 0, 0, 0.6);
   font-family: "Cabinet Grotesk", Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
   text-align: center;
-  z-index: 1;
-  background-color: #ffff;
-  padding: 10px;
-  border-radius: 4px;
-  height: 15px
+  white-space: nowrap;
+}
+
+.card__like-button {
+  background-image: url("../../assets/heart.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  transition: opacity 0.3s ease;
+  margin: 0;
+}
+
+.card__like-button:hover {
+  opacity: 0.6;
+}
+
+.card__like-button_active {
+  background-image: url("../../assets/heart-filled.svg");
+  background-color: transparent;
 }
 
 .card__image {
-  width: 100%;
+  width: 325px;
   height: 328px;
   object-fit: cover;
   border-radius: 19px;

@@ -11,6 +11,8 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
   
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,6 +53,8 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
       setPassword('');
       setEmailError('');
       setPasswordError('');
+      setEmailTouched(false);
+      setPasswordTouched(false);
       setError('');
     }
   }, [isOpen, validateForm]);
@@ -63,6 +67,8 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setEmailTouched(true);
+    setPasswordTouched(true);
     validateForm();
     
     if (!isFormValid) {
@@ -72,14 +78,11 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
     setIsLoading(true);
     setError('');
 
-    console.log(`Attempting login with email: ${email}`);
-
     authorize(email, password)
       .then((data) => {
         if (data && data.token) {
           localStorage.setItem("jwt", data.token);
           onSubmit(data.token);
-          // Reset form data
           setEmail('');
           setPassword('');
           setError('');
@@ -89,7 +92,7 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
         }
       })
       .catch((err) => {
-        console.error('Login error:', err);
+
         if (err.details && err.details.message) {
           setError(`Error: ${err.details.message}`);
         } else {
@@ -115,30 +118,36 @@ const LoginModal = ({ isOpen, onClose, onSubmit, onRegisterClick }) => {
       <label className="login-modal__label">
         <p className="login-modal__input-title">Email</p>
         <input
-          className={`login-modal__input ${emailError ? 'login-modal__input_error' : ''}`}
+          className={`login-modal__input ${emailTouched && emailError ? 'login-modal__input_error' : ''}`}
           type="email"
           name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          onBlur={() => validateEmail(email)}
+          onBlur={() => {
+            setEmailTouched(true);
+            validateEmail(email);
+          }}
           placeholder="Email"
           required
         />
-        {emailError && <p className="login-modal__input-error">{emailError}</p>}
+        {emailTouched && emailError && <p className="login-modal__input-error">{emailError}</p>}
       </label>
       <label className="login-modal__label">
         <p className="login-modal__input-title">Password</p>
         <input
-          className={`login-modal__input ${passwordError ? 'login-modal__input_error' : ''}`}
+          className={`login-modal__input ${passwordTouched && passwordError ? 'login-modal__input_error' : ''}`}
           type="password"
           name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          onBlur={() => validatePassword(password)}
+          onBlur={() => {
+            setPasswordTouched(true);
+            validatePassword(password);
+          }}
           placeholder="Password"
           required
         />
-        {passwordError && <p className="login-modal__input-error">{passwordError}</p>}
+        {passwordTouched && passwordError && <p className="login-modal__input-error">{passwordError}</p>}
       </label>
       {error && <p className="login-modal__error">{error}</p>}
       <div className="login-modal__buttons">
