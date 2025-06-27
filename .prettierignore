@@ -1,3 +1,7 @@
+# Vendor normalizes and other external files that shouldn't be formatted
+/src/vendor/*.css
+/src/vendor/normalize.css
+
 # dependencies
 node_modules
 .pnp

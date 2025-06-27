@@ -41,6 +41,15 @@ function App() {
   const navigate = useNavigate();
 
 
+  const sortItemsByNewest = (items) => {
+    return [...items].sort((a, b) => {
+      if (a.createdAt && b.createdAt) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      return 0;
+    });
+  };
+  
   useEffect(() => {
     getWeather(coordinates, apiKey)
       .then((data) => {
@@ -56,7 +65,7 @@ function App() {
           });
           
           if (filteredItems.length > 0) {
-            setClothingItems(filteredItems);
+            setClothingItems(sortItemsByNewest(filteredItems));
           } else {
             setClothingItems(defaultClothingItems);
           }
@@ -116,7 +125,7 @@ function App() {
           if (filteredItems.length === 0) {
             setClothingItems(defaultClothingItems);
           } else {
-            setClothingItems(filteredItems);
+            setClothingItems(sortItemsByNewest(filteredItems));
           }
           
           setIsLoginModalOpen(false);
@@ -284,8 +293,9 @@ function App() {
     api
       .addItem({ name, imageUrl, weather })
       .then((res) => {
-        // Add the new item to the beginning of the array
-        setClothingItems([res, ...clothingItems]);
+
+        const newItems = [res, ...clothingItems];
+        setClothingItems(newItems);
         closeActiveModal();
       })
       .catch((err) => {

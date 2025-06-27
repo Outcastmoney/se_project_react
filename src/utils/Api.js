@@ -50,10 +50,6 @@ function getItems() {
   .then(items => {
     console.log('Items received:', items);
     return items;
-  })
-  .catch(err => {
-    console.error('Error fetching items:', err);
-    throw err;
   });
 }
 

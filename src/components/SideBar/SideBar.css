@@ -38,9 +38,10 @@
   white-space: nowrap;
   background-color: #f3f3f3;
   padding: 25px 0 20px;
+  cursor: pointer;
 }
 .sidebar__button-logout {
-  height: 25;
+  height: 25px;
   font-family: Cabinet Grotesk, sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -55,6 +56,7 @@
   white-space: nowrap;
   padding: 5px 0 20px;
   background-color: #f3f3f3;
+  cursor: pointer;
 }
 .sidebar__sideBar {
   gap: 16px;

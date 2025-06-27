@@ -19,7 +19,8 @@ const Main = ({ weatherData, handleCardClick, clothingItems, isLoggedIn, onLikeC
           {clothingItems.length > 0 ? (
             clothingItems
               .filter((card) => {
-                if (!weatherData.type || clothingItems.every(item => item.weather !== weatherData.type)) {
+                // Only filter by weather type if it exists and we have matching items
+                if (!weatherData.type || !clothingItems.some(item => item.weather === weatherData.type)) {
                   return true;
                 }
                 return card.weather === weatherData.type;

@@ -13,8 +13,11 @@ function Profile({ clothingItems, weatherData, onCardClick, onAddItem, onLogout,
   
   const currentUser = useContext(CurrentUserContext);
   
+  const userClothingItems = Array.isArray(clothingItems) ? 
+    clothingItems.filter(item => item.owner === currentUser._id) : 
+    [];
+  
   useEffect(() => {
-    // Check if we're properly logged in when the component mounts
     console.log("Profile auth status:", {
       isLoggedIn: !!currentUser,
       userData: currentUser,
@@ -41,7 +44,7 @@ function Profile({ clothingItems, weatherData, onCardClick, onAddItem, onLogout,
         currentUser={currentUser}
       />
       <ClothesSection
-        clothingItems={clothingItems}
+        clothingItems={userClothingItems}
         weatherData={weatherData}
         onCardClick={onCardClick}
         onAddItem={onAddItem}
