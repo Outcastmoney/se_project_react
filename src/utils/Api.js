@@ -44,7 +44,9 @@ export function checkResponse(res) {
 function getItems() {
   console.log('Fetching items from API');
   return fetch(`${BASE_URL}/items`, {
-    headers: getHeaders()
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
   .then(checkResponse)
   .then(items => {

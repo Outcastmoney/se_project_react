@@ -143,9 +143,20 @@ function App() {
     localStorage.removeItem('jwt');
     setCurrentUser(null);
     setIsLoggedIn(false);
-    setClothingItems(defaultClothingItems);
-    // Use setTimeout to ensure state updates complete before navigation
-    setTimeout(() => navigate('/'), 0);
+    navigate('/');
+    
+    api.getItems()
+      .then(items => {
+        const filteredItems = items.filter(item => {
+          const imageUrl = item.imageUrl || item.link || '';
+          return !imageUrl.includes('example.com');
+        });
+        
+        setClothingItems(sortItemsByNewest(filteredItems));
+      })
+      .catch(err => {
+        console.error('Error fetching items after logout:', err);
+      });
   };
 
   const handleLoginClick = () => {
