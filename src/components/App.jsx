@@ -224,24 +224,7 @@ function App() {
   }, [activeModal]);
   
 
-  useEffect(() => {
-    if (isLoggedIn && currentUser && clothingItems.length > 0) {
-      api.getItems()
-        .then((items) => {
-          if (Array.isArray(items) && items.length > 0) {
-            const filteredItems = items.filter(item => {
-              const imageUrl = item.imageUrl || item.link || '';
-              return !imageUrl.includes('example.com');
-            });
-            
-            if (filteredItems.length > 0) {
-              setClothingItems(filteredItems);
-            }
-          }
-        })
-        .catch(() => {});
-    }
-  }, [isLoggedIn, currentUser, clothingItems.length]);
+  // Removed redundant useEffect that was fetching items unnecessarily when array length changed
 
   const handleCardLike = (cardId, isLiked) => {
     // Only process likes if user is logged in
@@ -304,8 +287,7 @@ function App() {
     api
       .addItem({ name, imageUrl, weather })
       .then((res) => {
-
-        const newItems = [res, ...clothingItems];
+        const newItems = [res.data, ...clothingItems];
         setClothingItems(newItems);
         closeActiveModal();
       })
@@ -440,14 +422,14 @@ function App() {
             isOpen={isLoginModalOpen}
             onClose={closeAllModals}
             onSubmit={handleLogin}
-            onRegister={handleRegisterClick}
+            onRegisterClick={handleRegisterClick}
           />
           
           <RegisterModal
             isOpen={isRegisterModalOpen}
             onClose={closeAllModals}
             onSubmit={handleLogin}
-            onLogin={handleLoginClick}
+            onLoginClick={handleLoginClick}
           />
           
           <EditProfileModal
