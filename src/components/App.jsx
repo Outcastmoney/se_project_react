@@ -160,6 +160,7 @@ function App() {
   };
 
   const handleLoginClick = () => {
+    setIsRegisterModalOpen(false);
     setIsLoginModalOpen(true);
   };
 
