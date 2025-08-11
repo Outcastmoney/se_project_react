@@ -36,14 +36,14 @@ function ItemCard({ item, onCardClick, onLikeClick, isLoggedIn }) {
     )}&background=random&color=fff&size=200`;
   }
 
-  const likesArray = Array.isArray(item.likes) ? item.likes : [];
   const [isItemLiked, setIsItemLiked] = useState(false);
 
   useEffect(() => {
+    const likesArray = Array.isArray(item.likes) ? item.likes : [];
     const liked =
       currentUser && likesArray.some((id) => id === currentUser._id);
     setIsItemLiked(liked);
-  }, [currentUser, likesArray, item]);
+  }, [currentUser, item]);
 
   const handleLikeClick = (e) => {
     e.stopPropagation();

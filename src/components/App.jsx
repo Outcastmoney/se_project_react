@@ -101,12 +101,15 @@ function App() {
   }, []);
 
   const handleLogin = (token) => {
-    // Use the token that was passed in, or get it from localStorage if not provided
-    const authToken = token || localStorage.getItem('jwt');
-    console.log('handleLogin called, token exists:', !!authToken);
+    // Use the token that was passed in directly - don't rely on localStorage
+    console.log('handleLogin called, token exists:', !!token);
     
-    if (authToken) {
-      auth.checkToken(authToken)
+    if (token) {
+      // Store token in localStorage for future use
+      localStorage.setItem('jwt', token);
+      
+      // Use the token directly to check validity
+      auth.checkToken(token)
         .then((user) => {
           console.log('Login successful, user data:', user);
           setCurrentUser(user);

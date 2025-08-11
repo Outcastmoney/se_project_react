@@ -117,3 +117,7 @@ export const defaultClothingItems = [
 export const coordinates = { latitude: 34.45280, longitude: -112.69518 };
 
 export const apiKey = "afc1006917b1d2ee71377f454f622c0b";
+
+export const BASE_URL = import.meta.env.PROD
+  ? "https://api.amoney.minecraftr.us"
+  : "http://localhost:3001";

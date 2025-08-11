@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "homepage": "https://your-domain.com",
+  "homepage": "https://amoney.minecraftr.us",
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",

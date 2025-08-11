@@ -1,7 +1,5 @@
-const BASE_URL = process.env.NODE_ENV === "production"
-  ? "https://api.your-domain.com"
-  : "http://localhost:3001";
-import { checkResponse } from './Api';
+import { BASE_URL } from "./constants";
+import { checkResponse } from './apiUtils';
 
 export const register = (name, avatar, email, password) => {
   console.log('Registering user with:', { name, email });

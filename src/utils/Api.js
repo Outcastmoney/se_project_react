@@ -1,6 +1,5 @@
-const BASE_URL = process.env.NODE_ENV === "production"
-  ? "https://api.your-domain.com"
-  : "http://localhost:3001";
+import { BASE_URL } from "../utils/constants";
+import { checkResponse } from "./apiUtils";
 
 const getHeaders = () => {
   const token = localStorage.getItem('jwt');
@@ -23,25 +22,7 @@ const getHeaders = () => {
   return headers;
 };
 
-export function checkResponse(res) {
-  if (res.ok) {
-    return res.json();
-  }
-  console.error(`API Error: ${res.status}`, res);
-  
-
-  if (res.status === 401) {
-
-    console.log('Authentication failed (401), clearing token');
-    localStorage.removeItem('jwt');
-  }
-  
-
-  return Promise.reject({
-    status: res.status,
-    message: `Error: ${res.status}`
-  });
-}
+// checkResponse moved to apiUtils.js
 
 function getItems() {
   console.log('Fetching items from API');
