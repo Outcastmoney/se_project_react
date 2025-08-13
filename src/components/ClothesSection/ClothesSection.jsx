@@ -3,7 +3,7 @@ import ItemCard from "../ItemCard/ItemCard";
 
 function ClothesSection({ clothingItems = [], onCardClick, onAddItem, isLoggedIn, onLikeClick }) {
   // Log the clothingItems for debugging
-  console.log('ClothesSection received items:', clothingItems);
+
 
   return (
     <div className="clothesSection">

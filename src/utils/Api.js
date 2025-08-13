@@ -25,7 +25,7 @@ const getHeaders = () => {
 // checkResponse moved to apiUtils.js
 
 function getItems() {
-  console.log('Fetching items from API');
+
   return fetch(`${BASE_URL}/items`, {
     headers: {
       'Content-Type': 'application/json'
@@ -33,7 +33,7 @@ function getItems() {
   })
   .then(checkResponse)
   .then(items => {
-    console.log('Items received:', items);
+
     return items;
   });
 }

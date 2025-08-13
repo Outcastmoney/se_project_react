@@ -10,7 +10,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "npm run build && scp -r ./dist/* username@your-domain.com:/home/username/frontend"
+    "deploy": "npm run build && scp -r ./dist/* averymoyer4253@amoney.minecraftr.us:/home/averymoyer4253/frontend"
   },
   "dependencies": {
     "celebrate": "^15.0.3",

@@ -5,11 +5,7 @@ import ClothesSection from "../ClothesSection/ClothesSection";
 import SideBar from "../SideBar/SideBar";
 
 function Profile({ clothingItems, weatherData, onCardClick, onAddItem, onLogout, onEditProfile, isLoggedIn, onLikeClick }) {
-  console.log("Profile component rendering with:", {
-    itemCount: Array.isArray(clothingItems) ? clothingItems.length : 'Not an array',
-    items: clothingItems,
-    hasWeatherData: !!weatherData
-  });
+
   
   const currentUser = useContext(CurrentUserContext);
   
@@ -18,15 +14,10 @@ function Profile({ clothingItems, weatherData, onCardClick, onAddItem, onLogout,
     [];
   
   useEffect(() => {
-    console.log("Profile auth status:", {
-      isLoggedIn: !!currentUser,
-      userData: currentUser,
-      hasToken: !!localStorage.getItem('jwt')
-    });
+    // Effect for user authentication status
   }, [currentUser]);
 
   if (!currentUser) {
-    console.warn("Profile access attempted without valid user");
     return (
       <div style={{padding: '40px', textAlign: 'center', color: '#FF4B4B'}}>
         <h3>Authentication Required</h3>

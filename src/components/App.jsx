@@ -84,7 +84,7 @@ function App() {
     if (token) {
       auth.checkToken(token)
         .then((user) => {
-          console.log('App - Token valid, user data:', user);
+
           setCurrentUser(user);
           setIsLoggedIn(true);
         })
@@ -102,7 +102,7 @@ function App() {
 
   const handleLogin = (token) => {
     // Use the token that was passed in directly - don't rely on localStorage
-    console.log('handleLogin called, token exists:', !!token);
+
     
     if (token) {
       // Store token in localStorage for future use
@@ -111,14 +111,14 @@ function App() {
       // Use the token directly to check validity
       auth.checkToken(token)
         .then((user) => {
-          console.log('Login successful, user data:', user);
+
           setCurrentUser(user);
           setIsLoggedIn(true);
           
           return api.getItems();
         })
         .then((items) => {
-          console.log('Got items after login:', items);
+
 
           const filteredItems = items.filter(item => {
             const imageUrl = item.imageUrl || item.link || '';
@@ -238,11 +238,11 @@ function App() {
     // But our isLiked is the current state, so we need to pass the opposite
     const shouldLike = !isLiked;
     
-    console.log('App - handleCardLike:', { cardId, currentlyLiked: isLiked, action: shouldLike ? 'Adding like' : 'Removing like' });
+
     
     api.changeLikeStatus(cardId, shouldLike)
       .then((updatedCard) => {
-        console.log('API response for like update:', updatedCard);
+
         
         // Update the card in the state immediately after successful API call
         setClothingItems((prevItems) => {
@@ -316,8 +316,8 @@ function App() {
           setWeatherData(filterData);
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        // Error handling for failed weather data fetch
       });
       
     // Cleanup function to prevent state updates after unmount

@@ -6,7 +6,7 @@ export function checkResponse(res) {
   console.error(`API Error: ${res.status}`, res);
 
   if (res.status === 401) {
-    console.log('Authentication failed (401), clearing token');
+
     localStorage.removeItem('jwt');
   }
 
