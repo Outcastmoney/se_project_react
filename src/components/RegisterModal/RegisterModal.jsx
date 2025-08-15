@@ -142,6 +142,12 @@ const RegisterModal = ({ isOpen, onClose, onSubmit, onLoginClick }) => {
       .catch((err) => {
         console.error("Registration error:", err);
 
+        // Check if this is a network error (Failed to fetch)
+        if (err instanceof TypeError && err.message.includes('fetch')) {
+          setError("Network error: Unable to connect to the server. Please check your internet connection and try again.");
+          return;
+        }
+
         const statusCodeMatch = err.toString().match(/Error:\s*(\d+)/);
         const statusCode = statusCodeMatch
           ? parseInt(statusCodeMatch[1])
